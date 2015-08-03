@@ -1,6 +1,6 @@
 <?php
 /**
- * DokuWiki Plugin prettyphoto (Renderer Component)
+ * DokuWiki Plugin colorbox (Renderer Component)
  *
  * @license Public Domain
  * @author  Marcus von Appen <marcus@sysfault.org>
@@ -13,14 +13,13 @@ if (!defined('DOKU_LF')) define('DOKU_LF', "\n");
 if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 require_once DOKU_INC.'inc/parser/xhtml.php';
 
-class renderer_plugin_prettyphoto extends Doku_Renderer_xhtml {
+class renderer_plugin_colorbox extends Doku_Renderer_xhtml {
 
     /**
      * Make available as XHTML replacement renderer
      */
-    public function canRender($format){
-        if($format == 'xhtml') return true;
-        return false;
+    function canRender($format){
+        return ($format=='xhtml');
     }
 
     public function internalmedia($src, $title=NULL, $align=NULL, $width=NULL,
@@ -58,7 +57,7 @@ class renderer_plugin_prettyphoto extends Doku_Renderer_xhtml {
     //output formatted
     if ($linking == 'nolink' || $noLink) $this->doc .= $link['name'];
         else $this->doc .= $this->_formatLink($link);
-     }
+    }
     // FIXME override any methods of Doku_Renderer_xhtml here
 }
 
