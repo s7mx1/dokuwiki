@@ -7,7 +7,7 @@ It's based on original dokuwiki gallery plugin with the following features:
 * upper case and special characters support in page name, namespace and image files/folders
 * exif information, GPS address and google map link if available displayed on top of image in colorbox mode
 * exif information, GPS address and google map link if available displayed below image in single linked image mode
-* eirect download links on top left of image in colorbox mode offering three sizes:
+* direct download links on top left of image in colorbox mode offering three sizes:
   * original
   * medium: scaled to 1360px
   * small: scaled to size as set in gallery mode or default to 680px in linked image mode
