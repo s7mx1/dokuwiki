@@ -22,6 +22,19 @@ class renderer_plugin_colorbox extends Doku_Renderer_xhtml {
         return ($format=='xhtml');
     }
 
+    /**
+     * Renders internal and external media with exif info at bottom of each JPEG image
+     *
+     * @author Andreas Gohr <andi@splitbrain.org>
+     * @param string $src       media ID
+     * @param string $title     descriptive text
+     * @param string $align     left|center|right
+     * @param int    $width     width of media in pixel
+     * @param int    $height    height of media in pixel
+     * @param string $cache     cache|recache|nocache
+     * @param bool   $render    should the media be embedded inline or just linked
+     * @return string
+     */
     function _media($src, $title = null, $align = null, $width = null,
                     $height = null, $cache = null, $render = true) {
         $ret = '';
@@ -69,6 +82,31 @@ class renderer_plugin_colorbox extends Doku_Renderer_xhtml {
                 $ret .= ' width="'.$this->_xmlEntities($width).'"';
             if(!is_null($height))
                 $ret .= ' height="'.$this->_xmlEntities($height).'"';
+            // add exif and gps info at the bottom of each image
+            if($ext == 'jpg' || $ext == 'jpeg') {
+                //try to use the caption from IPTC/EXIF
+                if (! $jepg ) {
+                    require_once(DOKU_INC.'lib/plugins/colorbox/JpegMetaGPS.php');
+                    $jpeg = new JpegMetaGPS(mediaFN($src));
+                }
+                if($jpeg !== false) {
+                 $infoshort = $jpeg->getShortExifInfo();
+                 $info = $jpeg->getExifInfo();
+                 $gpslink = $jpeg->getGPSInfo();
+                 $ret .= ' exif="'.implode(';', array_map(function ($v, $k) { if ($v) return strtolower($k) . ':' . $v.''; }, $infoshort, array_keys($infoshort))).'"';
+                 if ($gpslink)  $ret.=' map="'.$gpslink.'"';
+                 $ret .= ' token="'.media_get_token($src,"1360",$height).'"';
+                 $ret .= '/></a>';
+                 $ret .= '<div class="exiftitle">'.$title.'</div>';
+                 $ret .= '<div class="exif">';
+                 $ret .= implode(', ', array_map(function ($v, $k) { return $k . '=' . $v; }, $info, array_keys($info)));
+                 if ($gpslink) $ret.=' <a href='.$gpslink.'>Google GPS Location';
+                 $ret .= ' </a></div>';
+                 $ret .= '<a>';
+                }
+            }
+            //
+
         } elseif(media_supportedav($mime, 'video') || media_supportedav($mime, 'audio')) {
             // first get the $title
             $title = !is_null($title) ? $this->_xmlEntities($title) : false;
