@@ -241,9 +241,11 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
             // all possible images for the given namespace (or a single image)
             if(is_file($conf['mediadir'].'/'.$dir)){
                 require_once(DOKU_INC.'inc/JpegMeta.php');
+                $image_regex="/\.(jpe?g|gif|png)$/i";
+                if ($conf['mixedcase'] == 0) $image_regex="/\.(jpe?g|gif|png)$/";
                 $files[] = array(
                     'id'    => $data['ns'],
-                    'isimg' => preg_match('/\.(jpe?g|gif|png)$/',$dir),
+                    'isimg' => preg_match($image_regex,$dir),
                     'file'  => basename($dir),
                     'mtime' => filemtime($conf['mediadir'].'/'.$dir),
                     'meta'  => new JpegMeta($conf['mediadir'].'/'.$dir)
