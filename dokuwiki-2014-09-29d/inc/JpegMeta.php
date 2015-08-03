@@ -1674,7 +1674,7 @@ class JpegMeta {
                         for ($j = 0; $j < $count; $j++) {
                             $a = $this->_getLong($rawValue, $j * 8, $isBigEndian);
                             $b = $this->_getLong($rawValue, ($j * 8) + 4, $isBigEndian);
-                            $value = array();
+                            //$value = array();
                             $value[$j]['val'] = 0;
                             $value[$j]['num'] = $a;
                             $value[$j]['den'] = $b;
