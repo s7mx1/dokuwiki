@@ -27,5 +27,5 @@ $conf['fnencode'] = 'utf-8';
 $conf['deaccent'] = '0';
 $conf['mixedcase'] = 1;
 $conf['specialcharacters'] = 1;
-$conf['png_quality']) = 2;
+$conf['png_quality'] = 2;
 ```
