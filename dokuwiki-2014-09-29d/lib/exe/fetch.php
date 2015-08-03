@@ -30,6 +30,8 @@ if (defined('SIMPLE_TEST')) {
     $REV = preg_replace('/[^0-9]/', '', $REV);
 
     list($EXT, $MIME, $DL) = mimetype($MEDIA, false);
+    // get dl parameter from input
+    $DL = $INPUT->bool('dl');
     if($EXT === false) {
         $EXT  = 'unknown';
         $MIME = 'application/octet-stream';
