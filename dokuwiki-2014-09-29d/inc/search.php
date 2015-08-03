@@ -32,7 +32,9 @@ function search(&$data,$base,$func,$opts,$dir='',$lvl=1,$sort='natural'){
     $dh = @opendir($base.'/'.$dir);
     if(!$dh) return;
     while(($file = readdir($dh)) !== false){
-        if(preg_match('/^[\._]/',$file)) continue; //skip hidden files and upper dirs
+        if ($conf['mixedcase'] == 0 && $conf['specialcharacters'] == 0) {
+            if(preg_match('/^[\._]/',$file)) continue; //skip hidden files and upper dirs
+        }
         if(is_dir($base.'/'.$dir.'/'.$file)){
             $dirs[] = $dir.'/'.$file;
             continue;
@@ -138,6 +140,7 @@ function search_namespaces(&$data,$base,$file,$type,$lvl,$opts){
  * @author  Andreas Gohr <andi@splitbrain.org>
  */
 function search_media(&$data,$base,$file,$type,$lvl,$opts){
+    global $conf;
 
     //we do nothing with directories
     if($type == 'd') {
@@ -170,7 +173,9 @@ function search_media(&$data,$base,$file,$type,$lvl,$opts){
     $info['size']     = filesize($base.'/'.$file);
     $info['mtime']    = filemtime($base.'/'.$file);
     $info['writable'] = is_writable($base.'/'.$file);
-    if(preg_match("/\.(jpe?g|gif|png)$/",$file)){
+    $image_regex="/\.(jpe?g|gif|png)$/i";
+    if ($conf['mixedcase'] == 0) $image_regex="/\.(jpe?g|gif|png)$/";
+    if(preg_match($image_regex,$file)){
         $info['isimg'] = true;
         $info['meta']  = new JpegMeta($base.'/'.$file);
     }else{

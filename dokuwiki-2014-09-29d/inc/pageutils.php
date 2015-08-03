@@ -118,7 +118,7 @@ function cleanID($raw_id,$ascii=false){
         $sepcharpat = '#\\'.$sepchar.'+#';
 
     $id = trim((string)$raw_id);
-    $id = utf8_strtolower($id);
+    if ($conf['mixedcase'] == 0) $id = utf8_strtolower($id);
 
     //alternative namespace seperator
     if($conf['useslash']){
@@ -130,8 +130,8 @@ function cleanID($raw_id,$ascii=false){
     if($conf['deaccent'] == 2 || $ascii) $id = utf8_romanize($id);
     if($conf['deaccent'] || $ascii) $id = utf8_deaccent($id,-1);
 
-    //remove specials
-    $id = utf8_stripspecials($id,$sepchar,'\*');
+    //remove specials if specialcharacters is set to 0
+    if ($conf['specialcharacters'] == 0 ) $id = utf8_stripspecials($id,$sepchar,'\*');
 
     if($ascii) $id = utf8_strip($id);
 
