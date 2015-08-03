@@ -5,13 +5,13 @@ It's based on original dokuwiki gallery plugin with the following features:
 
 * colorbox support from http://jacklmoore.com/colorbox
 * upper case and special characters support in page name, namespace and image files/folders
-* Exif information, GPS address and google map link if available displayed on top of image in colorbox mode
-* Exif information, GPS address and google map link if available displayed below image in single linked image mode
-* Direct download links on top left of image in colorbox mode offering three sizes:
+* exif information, GPS address and google map link if available displayed on top of image in colorbox mode
+* exif information, GPS address and google map link if available displayed below image in single linked image mode
+* eirect download links on top left of image in colorbox mode offering three sizes:
   * original
   * medium: scaled to 1360px
   * small: scaled to size as set in gallery mode or default to 680px in linked image mode
-* Numbering on top of group images in colorbox mode
+* numbering on top of group images in colorbox mode
 * auto rotate images according to image's orientation tag if found
 * fix scaling calculation in the original gallery plugin as well as colorbox
 * works both in linked image as well as in gallery mode
