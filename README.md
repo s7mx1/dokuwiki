@@ -20,8 +20,7 @@ It's based on original dokuwiki gallery plugin with the following features:
 
 ## How to install
 
-Copy dokuwiki-2014-09-29d to a suitable place on your server and move subfolders in dokuwiki-2014-09-29d/plugins to dokuwiki-2014-09-29d/lib/plugins. Add the following into user local settings: dokuwiki-2014-09-29d/conf/local.php
-add the following to conf/local.php
+Copy dokuwiki-2014-09-29d to a suitable place on your server and move subfolders in dokuwiki-2014-09-29d/plugins to dokuwiki-2014-09-29d/lib/plugins. Add the following into user local setting file dokuwiki-2014-09-29d/conf/local.php:
 ```php
 $conf['renderer_xhtml'] = 'colorbox';
 $conf['fnencode'] = 'utf-8';
