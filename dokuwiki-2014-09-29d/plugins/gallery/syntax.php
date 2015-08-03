@@ -508,6 +508,8 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
                     $dim = array('w'=>$w,'h'=>$h);
                 }
             }else{
+                // this should not happen but if it does this usually means a corrupted image file therefore we want to log it
+                syslog(LOG_WARNING,'no size info found which is likely due to corrupted image file. force crop to '.$data['tw'].'x'.$data['th'].'. file: '.$conf['mediadir'].utf8_encodeFN(str_replace(':','/',$img['id'])).$img['file']);
                 $data['crop'] = true; // no size info -> always crop
             }
         }
