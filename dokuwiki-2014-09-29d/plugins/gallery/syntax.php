@@ -526,7 +526,11 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
         $i['width']    = $w;
         $i['height']   = $h;
         $i['border']   = 0;
-        $i['alt']      = $this->_meta($img,'title');
+        if ($this->_meta($img,'title')) {
+            $i['alt']      = $this->_meta($img,'title');
+        } else {
+            $i['alt'] = end(explode(":",$img['id']));
+        }
         $i['longdesc'] = str_replace("\n",' ',$this->_meta($img,'desc'));
         if(!$i['longdesc']) unset($i['longdesc']);
         $i['class']    = 'tn';
@@ -550,6 +554,15 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
                 }
                 break;
 
+        }
+        require_once(DOKU_INC.'lib/plugins/colorbox/JpegMetaGPS.php');
+        $jpeg = new JpegMetaGPS(mediaFN($img['id']));
+        if($jpeg !== false) {
+            $info = $jpeg->getShortExifInfo();
+            $gpslink = $jpeg->getGPSInfo();
+            if ($info) $i['exif']= implode(';', array_map(function ($v, $k) { if ($v) return strtolower($k) . ':' . $v.''; }, $info, array_keys($info)));
+            if ($gpslink)  $i['map']=$gpslink;
+            $i['token']=media_get_token($img['id'],"1360","0");
         }
         $iatt = buildAttributes($i);
         $src  = ml($img['id'],$dim);
