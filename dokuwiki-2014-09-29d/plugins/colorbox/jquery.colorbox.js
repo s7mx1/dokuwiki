@@ -867,6 +867,7 @@
 			if (total > 1) { // handle grouping
 				if (typeof settings.get('current') === "string") {
 					$current.html(settings.get('current').replace('{current}', index + 1).replace('{total}', total)).show();
+                                        $title.html(titleString.replace('{current}', index + 1).replace('{total}', total)).show();
 				}
 
 				$next[(settings.get('loop') || index < total - 1) ? "show" : "hide"]().html(settings.get('next'));
@@ -1019,20 +1020,39 @@
 						photo.width = photo.width / window.devicePixelRatio;
 					}
 
-					if (settings.get('scalePhotos')) {
-						setResize = function () {
-							photo.height -= photo.height * percent;
-							photo.width -= photo.width * percent;
-						};
-						if (settings.mw && photo.width > settings.mw) {
-							percent = (photo.width - settings.mw) / photo.width;
-							setResize();
-						}
-						if (settings.mh && photo.height > settings.mh) {
-							percent = (photo.height - settings.mh) / photo.height;
-							setResize();
-						}
-					}
+                                        if (settings.get('scalePhotos')) {
+                                            var percenta = false;
+                                            var percentb = false;
+                                            //console.log("photo height: ".concat(photo.height));
+                                            //console.log("photo width: ".concat(photo.weight));
+                                            //console.log("max width: ".concat(settings.mw));
+                                            //console.log("max height: ".concat(settings.mh));
+                                                setResize = function () {
+                                                        photo.height -= photo.height * percent;
+                                                        photo.width -= photo.width * percent;
+                                                        //console.log("photo height: ".concat(photo.height));
+                                                    //console.log("photo width: ".concat(photo.weight));
+                                                };
+                                                if (settings.mw && photo.width > settings.mw) {
+                                                        percenta = (photo.width - settings.mw) / photo.width;
+                                                        percent = percenta;
+                                                }
+                                                if (settings.mh && photo.height > settings.mh) {
+                                                        percentb = (photo.height - settings.mh) / photo.height;
+                                                        percent = percentb;
+                                                }
+                                                if (percenta && percentb){
+                                                if (percenta > percentb) {
+                                                    percent = percenta;
+                                                } else {
+                                                    percent = percentb;
+                                                }
+                                                }
+                                                if (percent) {
+                                                    //console.log("photo resize percentage: ".concat(percent));
+                                                    setResize();
+                                                }
+                                        }
 
 					if (settings.h) {
 						photo.style.marginTop = Math.max(settings.mh - photo.height, 0) / 2 + 'px';
