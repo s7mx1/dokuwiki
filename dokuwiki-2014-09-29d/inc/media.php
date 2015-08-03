@@ -1885,7 +1885,8 @@ function media_crop_image($file, $ext, $w, $h=0){
 
     // check if the crop can be handled completely by resize,
     // i.e. the specified width & height match the aspect ratio of the source image
-    if ($w == round($h*$fr)) {
+    // check rounding for either width or height to avoid cropping for portrait photos
+    if (($w == round($h*$fr) || ($h == round($w/$fr)))) {
         return media_resize_image($file, $ext, $w);
     }
 
