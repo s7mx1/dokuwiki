@@ -833,35 +833,35 @@
 				settings.get('onComplete');
 			};
 
-                        //console.log ( "href: ".concat($(settings.el).attr('href') ));
-                        var exif = $(settings.el).attr('exif') ;
-                        var map = $(settings.el).attr('map');
+			//$title.html(settings.get('title')).show();
+			//console.log ( "href: ".concat($(settings.el).attr('href') ));
+			var exif = $(settings.el).attr('exif') ;
+			var map = $(settings.el).attr('map');
                         var titleString = settings.get('title');
 
-                        //console.log ( "titleString: ".concat(titleString));
-                        titleString=" <a href='".concat($(settings.el).attr('furl').replace('fetch.php?','fetch.php?dl=1&')).concat("' class='downloa
-                        if (total > 1) var titleString = "{current}/{total}  ".concat(titleString);
-                        titleString=titleString.concat("   <a href='").concat($(settings.el).attr('murl').replace('fetch.php?','fetch.php?dl=1&')).co
-                        titleString=titleString.concat("   <a href='").concat($(settings.el).attr('surl').replace('fetch.php?','fetch.php?dl=1&')).co
-                        if (map) {
-                             titleString = titleString.concat(" <a class='map' href=").concat(map).concat(" target='_blank'>Map</a>");
-                        }
-                        if (exif) {
-                           //titleString = titleString.concat(": ");
-                           var atitleString = '';
-                           var exifarray = exif.split(";");
-                           for (exifitem in exifarray) {
-                               //console.log ( "exif: ".concat(exifarray[exifitem]) );
-                               if (exifarray[exifitem] && ((exifarray[exifitem].indexOf("latitude") == -1 ) &&  ( exifarray[exifitem].indexOf("longit
-                           }
-                           atitleString = atitleString.replace(/, Adr:/,'. Adr:');
-                           atitleString = atitleString.replace(/[,]$/,'');
-                           titleString = titleString.concat(atitleString);
-                        }
+			//console.log ( "titleString: ".concat(titleString));
+			titleString=" <a href='".concat($(settings.el).attr('furl').replace('fetch.php?','fetch.php?dl=1&')).concat("' class='downloadlinkf'>").concat(titleString).concat("</a>");
+			if (total > 1) var titleString = "{current}/{total}  ".concat(titleString);
+			titleString=titleString.concat("   <a href='").concat($(settings.el).attr('murl').replace('fetch.php?','fetch.php?dl=1&')).concat("' class='downloadlinkm'>M").concat("</a>  ");
+			titleString=titleString.concat("   <a href='").concat($(settings.el).attr('surl').replace('fetch.php?','fetch.php?dl=1&')).concat("' class='downloadlinks'>S").concat("</a>    ");
+			if (map) {
+			     titleString = titleString.concat(" <a class='map' href=").concat(map).concat(" target='_blank'>Map</a>");
+			}
+			if (exif) {
+			   //titleString = titleString.concat(": ");
+			   var atitleString = '';
+			   var exifarray = exif.split(";");
+			   for (exifitem in exifarray) {
+			       //console.log ( "exif: ".concat(exifarray[exifitem]) );
+			       if (exifarray[exifitem] && ((exifarray[exifitem].indexOf("latitude") == -1 ) &&  ( exifarray[exifitem].indexOf("longitude") == -1) && ( exifarray[exifitem].indexOf("exposure") == -1)  && ( exifarray[exifitem].indexOf("light") == -1) ) ) atitleString = atitleString.concat(" ").concat(exifarray[exifitem].split(":").slice(1,exifarray[exifitem].split(":").length+1).join(":")).concat(",");
+			   }
+			   atitleString = atitleString.replace(/, Adr:/,'. Adr:');
+			   atitleString = atitleString.replace(/[,]$/,'');
+			   titleString = titleString.concat(atitleString);
+			}
 
-                        //console.log ( "titleString: ".concat(titleString));
-                        $title.html(titleString).show();
-
+			//console.log ( "titleString: ".concat(titleString));
+			$title.html(titleString).show();
 			$loaded.show();
 
 			if (total > 1) { // handle grouping
@@ -1020,39 +1020,39 @@
 						photo.width = photo.width / window.devicePixelRatio;
 					}
 
-                                        if (settings.get('scalePhotos')) {
-                                            var percenta = false;
-                                            var percentb = false;
-                                            //console.log("photo height: ".concat(photo.height));
-                                            //console.log("photo width: ".concat(photo.weight));
-                                            //console.log("max width: ".concat(settings.mw));
-                                            //console.log("max height: ".concat(settings.mh));
-                                                setResize = function () {
-                                                        photo.height -= photo.height * percent;
-                                                        photo.width -= photo.width * percent;
-                                                        //console.log("photo height: ".concat(photo.height));
-                                                    //console.log("photo width: ".concat(photo.weight));
-                                                };
-                                                if (settings.mw && photo.width > settings.mw) {
-                                                        percenta = (photo.width - settings.mw) / photo.width;
-                                                        percent = percenta;
-                                                }
-                                                if (settings.mh && photo.height > settings.mh) {
-                                                        percentb = (photo.height - settings.mh) / photo.height;
-                                                        percent = percentb;
-                                                }
-                                                if (percenta && percentb){
-                                                if (percenta > percentb) {
-                                                    percent = percenta;
-                                                } else {
-                                                    percent = percentb;
-                                                }
-                                                }
-                                                if (percent) {
-                                                    //console.log("photo resize percentage: ".concat(percent));
-                                                    setResize();
-                                                }
-                                        }
+					if (settings.get('scalePhotos')) {
+					    var percenta = false;
+					    var percentb = false;
+					    //console.log("photo height: ".concat(photo.height));
+					    //console.log("photo width: ".concat(photo.weight));
+					    //console.log("max width: ".concat(settings.mw));
+					    //console.log("max height: ".concat(settings.mh));
+						setResize = function () {
+							photo.height -= photo.height * percent;
+							photo.width -= photo.width * percent;
+							//console.log("photo height: ".concat(photo.height));
+						    //console.log("photo width: ".concat(photo.weight));
+						};
+						if (settings.mw && photo.width > settings.mw) {
+							percenta = (photo.width - settings.mw) / photo.width;
+							percent = percenta;
+						}
+						if (settings.mh && photo.height > settings.mh) {
+							percentb = (photo.height - settings.mh) / photo.height;
+							percent = percentb;
+						}
+						if (percenta && percentb){
+						if (percenta > percentb) {
+						    percent = percenta;
+						} else {
+						    percent = percentb;
+						}
+						}
+						if (percent) {
+						    //console.log("photo resize percentage: ".concat(percent));
+						    setResize();
+						}
+					}
 
 					if (settings.h) {
 						photo.style.marginTop = Math.max(settings.mh - photo.height, 0) / 2 + 'px';
