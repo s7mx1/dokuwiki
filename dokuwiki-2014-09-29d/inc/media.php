@@ -2193,7 +2193,12 @@ function media_resize_imageGD($ext,$from,$from_w,$from_h,$to,$to_w,$to_h,$ofs_x=
         if(!function_exists('imagepng')){
             $okay = false;
         }else{
-            $okay =  imagepng($newimg, $to);
+            // add compress png image if png_qulaity is set
+            if ($conf['png_quality']) {
+                $okay =  imagepng($newimg, $to, $conf['png_quality']);
+            } else {
+                $okay =  imagepng($newimg, $to);
+            }
         }
     }elseif($ext == 'gif') {
         if(!function_exists('imagegif')){
