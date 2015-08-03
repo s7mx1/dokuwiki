@@ -90,6 +90,9 @@ if (defined('SIMPLE_TEST')) {
 
     // finally send the file to the client
     $evt = new Doku_Event('MEDIA_SENDFILE', $data);
+    $base_name=pathinfo($data['orig'],PATHINFO_BASENAME);
+    $ext_name=pathinfo($data['orig'],PATHINFO_EXTENSION);
+    if($WIDTH and $DL) $data['orig'] = $base_name.'_'.$WIDTH.'.'.$ext_name;
     if($evt->advise_before()) {
         sendFile($data['file'], $data['mime'], $data['download'], $data['cache'], $data['ispublic'], $data['orig']);
     }
