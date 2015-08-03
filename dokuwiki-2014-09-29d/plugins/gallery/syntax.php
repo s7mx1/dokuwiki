@@ -497,9 +497,14 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
             if($w && $h){
                 $dim = array();
                 if($w > $data['tw'] || $h > $data['th']){
-                    $ratio = $this->_ratio($img,$data['tw'],$data['th']);
-                    $w = floor($w * $ratio);
-                    $h = floor($h * $ratio);
+                    $fr = $w/$h;
+                    if ($fr >= ($data['tw']/$data['th'])) {
+                        $w = $data['tw'];
+                        $h = round($w / $fr );
+                    } else {
+                        $h = $data['th'];
+                        $w = round($h * $fr );
+                    }
                     $dim = array('w'=>$w,'h'=>$h);
                 }
             }else{
