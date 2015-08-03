@@ -833,8 +833,35 @@
 				settings.get('onComplete');
 			};
 
+                        //console.log ( "href: ".concat($(settings.el).attr('href') ));
+                        var exif = $(settings.el).attr('exif') ;
+                        var map = $(settings.el).attr('map');
+                        var titleString = settings.get('title');
 
-			$title.html(settings.get('title')).show();
+                        //console.log ( "titleString: ".concat(titleString));
+                        titleString=" <a href='".concat($(settings.el).attr('furl').replace('fetch.php?','fetch.php?dl=1&')).concat("' class='downloa
+                        if (total > 1) var titleString = "{current}/{total}  ".concat(titleString);
+                        titleString=titleString.concat("   <a href='").concat($(settings.el).attr('murl').replace('fetch.php?','fetch.php?dl=1&')).co
+                        titleString=titleString.concat("   <a href='").concat($(settings.el).attr('surl').replace('fetch.php?','fetch.php?dl=1&')).co
+                        if (map) {
+                             titleString = titleString.concat(" <a class='map' href=").concat(map).concat(" target='_blank'>Map</a>");
+                        }
+                        if (exif) {
+                           //titleString = titleString.concat(": ");
+                           var atitleString = '';
+                           var exifarray = exif.split(";");
+                           for (exifitem in exifarray) {
+                               //console.log ( "exif: ".concat(exifarray[exifitem]) );
+                               if (exifarray[exifitem] && ((exifarray[exifitem].indexOf("latitude") == -1 ) &&  ( exifarray[exifitem].indexOf("longit
+                           }
+                           atitleString = atitleString.replace(/, Adr:/,'. Adr:');
+                           atitleString = atitleString.replace(/[,]$/,'');
+                           titleString = titleString.concat(atitleString);
+                        }
+
+                        //console.log ( "titleString: ".concat(titleString));
+                        $title.html(titleString).show();
+
 			$loaded.show();
 
 			if (total > 1) { // handle grouping
