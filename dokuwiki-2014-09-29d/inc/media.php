@@ -2091,6 +2091,44 @@ function media_resize_imageGD($ext,$from,$from_w,$from_h,$to,$to_w,$to_h,$ofs_x=
     if ($ext == 'jpg' || $ext == 'jpeg'){
         if(!function_exists("imagecreatefromjpeg")) return false;
         $image = @imagecreatefromjpeg($from);
+        // rotate the image according to exif orientation tag
+        if ($image) {
+            $meta = new JpegMeta($from);
+            $orientation = $meta->getField("Orientation");
+            switch($orientation) {
+                case 3:
+                    // rotate 180 degrees clockwise
+                    $image = imagerotate($image, 180, 0);
+                    break;
+                case 6:
+                    // only rotate to vertical if width is larger than height
+                    if (intval($from_w) > intval($from_h)) {
+                        // rotage image 90 degrees clockwise
+                        $image = imagerotate($image, -90, 0);
+                        $from_w_old = $from_w;
+                        $to_w_old = $to_w;
+                        $from_w = $from_h;
+                        $to_w = $to_h;
+                        $from_h = $from_w_old;
+                        $to_h = $to_w_old;
+                    }
+                    break;
+                case 8:
+                    // only rotate to vertical if width is larger than height
+                    if (intval($from_w) > intval($from_h)) {
+                        // rotage image 90 degrees anti-clockwise
+                        $image = imagerotate($image, 90, 0);
+                        $from_w_old = $from_w;
+                        $to_w_old = $to_w;
+                        $from_w = $from_h;
+                        $to_w = $to_h;
+                        $from_h = $from_w_old;
+                        $to_h = $to_w_old;
+                    }
+                    break;
+            }
+
+        }
     }elseif($ext == 'png') {
         if(!function_exists("imagecreatefrompng")) return false;
         $image = @imagecreatefrompng($from);
