@@ -521,6 +521,27 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
         $i['longdesc'] = str_replace("\n",' ',$this->_meta($img,'desc'));
         if(!$i['longdesc']) unset($i['longdesc']);
         $i['class']    = 'tn';
+        // get exif and gps info
+        $orientation = $img['meta']->getField("Orientation");
+        switch($orientation) {
+            case 6:
+                if ($i['width'] > $i['height'] ) {
+                    // swap width and height if the image is going to be rotated vertically
+                    $old_width = $i['width'];
+                    $i['width'] = $i['height'];
+                    $i['height'] = $old_width;
+                }
+                break;
+            case 8:
+                if ($i['width'] > $i['height'] ) {
+                    // swap width and height if the image is going to be rotated vertically
+                    $old_width = $i['width'];
+                    $i['width'] = $i['height'];
+                    $i['height'] = $old_width;
+                }
+                break;
+
+        }
         $iatt = buildAttributes($i);
         $src  = ml($img['id'],$dim);
 
