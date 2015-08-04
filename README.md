@@ -29,3 +29,9 @@ $conf['mixedcase'] = 1;
 $conf['specialcharacters'] = 1;
 $conf['png_quality'] = 2;
 ```
+## Debug
+Extra logging (syslog) can be turned on by setting
+```php
+$conf['syslog'] = 1;
+```
+in dokuwiki-2014-09-29d/conf/local.php.
