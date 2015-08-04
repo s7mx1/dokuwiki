@@ -24,7 +24,7 @@ div.dokuwiki div.gallery {
  *   }*/
 
 div.dokuwiki div.gallery img.tn {
-    margin: 9px;
+    margin: -5px;
     vertical-align: middle;
     padding: 0.4em;
     border: 1px solid #000;
@@ -32,14 +32,17 @@ div.dokuwiki div.gallery img.tn {
 
 div.dokuwiki div.gallery_left {
     float: left;
+    width: 100%;
 }
 
 div.dokuwiki div.gallery div {
     float: left;
+    width: 100%;
 }
 
 div.dokuwiki div.gallery_right {
     float: right;
+    width: 100%;
 }
 
 div.dokuwiki div.gallery_center {
@@ -48,7 +51,7 @@ div.dokuwiki div.gallery_center {
 }
 
 div.dokuwiki div.gallery_center {
-    width: 80%;
+    width: 100%;
     text-align: center;
 }
 
