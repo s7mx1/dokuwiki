@@ -1860,6 +1860,7 @@ function media_resize_image($file, $ext, $w, $h=0){
         return $local;
     }
     //still here? resizing failed
+    syslog(LOG_WARNING,'[media.php] media_resize_image failed for '.$file.'. This is likely due to corrupted image file.');
     return $file;
 }
 
@@ -1879,6 +1880,8 @@ function media_crop_image($file, $ext, $w, $h=0){
     $info = @getimagesize($file); //get original size
     if($info == false) return $file; // that's no image - it's a spaceship!
 
+    if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_crop_image: '.$file.', size: '.$info[0].'x'.$info[1].', resize to:'.$w.'x'.$h);
+
     // calculate crop size
     $fr = $info[0]/$info[1];
     $tr = $w/$h;
@@ -1887,8 +1890,12 @@ function media_crop_image($file, $ext, $w, $h=0){
     // i.e. the specified width & height match the aspect ratio of the source image
     // check rounding for either width or height to avoid cropping for portrait photos
     if (($w == round($h*$fr) || ($h == round($w/$fr)))) {
+        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_crop_image: use media_resize_image instead: '.$file.', width: '.$w);
         return media_resize_image($file, $ext, $w);
     }
+
+    if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_crop_image: resize is not possible and we are doing crop now');
+    if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_crop_image: fr: '.$fr.' tr: '.$tr.' round w: '.round($h*$fr)).' round h:'.round($w/$fr);
 
     if($tr >= 1){
         if($tr > $fr){
@@ -2098,13 +2105,16 @@ function media_resize_imageGD($ext,$from,$from_w,$from_h,$to,$to_w,$to_h,$ofs_x=
             switch($orientation) {
                 case 3:
                     // rotate 180 degrees clockwise
+                        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_resize_imageGD:orientation: '.$orientation.' rotate 180 degrees clockwise');
                     $image = imagerotate($image, 180, 0);
                     break;
                 case 6:
                     // only rotate to vertical if width is larger than height
                     if (intval($from_w) > intval($from_h)) {
                         // rotage image 90 degrees clockwise
+                        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_resize_imageGD:orientation: '.$orientation.' rotate 90 degrees clockwise');
                         $image = imagerotate($image, -90, 0);
+                        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_resize_imageGD: swap width and height as we have just rotated the image vertically');
                         $from_w_old = $from_w;
                         $to_w_old = $to_w;
                         $from_w = $from_h;
@@ -2116,8 +2126,10 @@ function media_resize_imageGD($ext,$from,$from_w,$from_h,$to,$to_w,$to_h,$ofs_x=
                 case 8:
                     // only rotate to vertical if width is larger than height
                     if (intval($from_w) > intval($from_h)) {
+                        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_resize_imageGD:orientation: '.$orientation.' rotate 90 degrees anti-clockwise');
                         // rotage image 90 degrees anti-clockwise
                         $image = imagerotate($image, 90, 0);
+                        if ($conf['syslog']) syslog(LOG_WARNING,'[media.php] media_resize_imageGD: swap width and height as we have just rotated the image vertically');
                         $from_w_old = $from_w;
                         $to_w_old = $to_w;
                         $from_w = $from_h;

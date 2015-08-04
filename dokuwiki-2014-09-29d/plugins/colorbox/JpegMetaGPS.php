@@ -126,14 +126,15 @@ class JpegMetaGPS extends JpegMeta {
     }
    
     function getGPSInfo() {
+        global $conf;
         $this->_parseAll();
         if ($this->_markers == null) {
             return false;
         }
         $longitude=$this->getGps( $this->_info['exif']['GPSLongitude'],$this->_info['exif']['GPSLongitudeRef']);
         $latitude=$this->getGps( $this->_info['exif']['GPSLatitude'],$this->_info['exif']['GPSLatitudeRef']);
-        //syslog(LOG_WARNING,'latitude:'. $latitude);
-        //syslog(LOG_WARNING,'longitude:'. $longitude);
+        if ($conf['syslog']) syslog(LOG_WARNING,'[colorbox:JpegMetaGPS.php] getGPSInfo:latitude:'. $latitude);
+        if ($conf['syslog']) syslog(LOG_WARNING,'[colorbox:JpegMetaGPS.php] getGPSInfo:longitude:'. $longitude);
         if ($latitude && $longitude) {
         $link = 'http://maps.google.com/maps?q='.$latitude.','.$longitude;
         return $link;

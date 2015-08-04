@@ -491,11 +491,13 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
      */
     function _image(&$img,$data){
         global $ID;
+        global $conf;
 
         // calculate thumbnail size
         if(!$data['crop']){
             $w = (int) $this->_meta($img,'width');
             $h = (int) $this->_meta($img,'height');
+            if ($conf['syslog']) syslog(LOG_WARNING,'[gallery:syntax.php] image file: '.$conf['mediadir'].utf8_encodeFN(str_replace(':','/',$img['id'])).$img['file'].'. size: '.$w.'x'.$h);
             if($w && $h){
                 $dim = array();
                 if($w > $data['tw'] || $h > $data['th']){
@@ -508,6 +510,7 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
                         $w = round($h * $fr );
                     }
                     $dim = array('w'=>$w,'h'=>$h);
+                if ($conf['syslog']) syslog(LOG_WARNING,'[gallery:syntax.php] image file: '.$conf['mediadir'].utf8_encodeFN(str_replace(':','/',$img['id'])).$img['file'].'. reize to: '.$w.'x'.$h);
                 }
             }else{
                 // this should not happen but if it does this usually means a corrupted image file therefore we want to log it
@@ -536,10 +539,12 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
         $i['class']    = 'tn';
         // get exif and gps info
         $orientation = $img['meta']->getField("Orientation");
+        if ($conf['syslog']) syslog(LOG_WARNING,'[gallery:syntax.php] orientation: '.$orientation);
         switch($orientation) {
             case 6:
                 if ($i['width'] > $i['height'] ) {
                     // swap width and height if the image is going to be rotated vertically
+                    if ($conf['syslog']) syslog(LOG_WARNING,'swap width and height as the image is going to be rotated vertically');
                     $old_width = $i['width'];
                     $i['width'] = $i['height'];
                     $i['height'] = $old_width;
@@ -548,6 +553,7 @@ class syntax_plugin_gallery extends DokuWiki_Syntax_Plugin {
             case 8:
                 if ($i['width'] > $i['height'] ) {
                     // swap width and height if the image is going to be rotated vertically
+                    if ($conf['syslog']) syslog(LOG_WARNING,'swap width and height as the image is going to be rotated vertically');
                     $old_width = $i['width'];
                     $i['width'] = $i['height'];
                     $i['height'] = $old_width;

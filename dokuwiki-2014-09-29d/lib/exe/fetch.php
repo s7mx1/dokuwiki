@@ -93,6 +93,9 @@ if (defined('SIMPLE_TEST')) {
     $base_name=pathinfo($data['orig'],PATHINFO_BASENAME);
     $ext_name=pathinfo($data['orig'],PATHINFO_EXTENSION);
     if($WIDTH and $DL) $data['orig'] = $base_name.'_'.$WIDTH.'.'.$ext_name;
+    global $conf;
+    if ($conf['syslog']) syslog(LOG_WARNING,'[fetch.php] source file: '.$data['orig']);
+    if ($conf['syslog']) syslog(LOG_WARNING,'[fetch.php] cache file to send: '.$data['file']);
     if($evt->advise_before()) {
         sendFile($data['file'], $data['mime'], $data['download'], $data['cache'], $data['ispublic'], $data['orig']);
     }

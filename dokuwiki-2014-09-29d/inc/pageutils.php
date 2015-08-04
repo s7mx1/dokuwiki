@@ -108,6 +108,8 @@ function cleanID($raw_id,$ascii=false){
     global $cache_cleanid;
     $cache = & $cache_cleanid;
 
+    if ($conf['syslog']) syslog(LOG_WARNING,'[pageutils.php] cleanID: raw_id: '.$raw_id);
+
     // check if it's already in the memory cache
     if (isset($cache[(string)$raw_id])) {
         return $cache[(string)$raw_id];
@@ -143,6 +145,7 @@ function cleanID($raw_id,$ascii=false){
     $id = preg_replace('#[:\._\-]+:#',':',$id);
 
     $cache[(string)$raw_id] = $id;
+    if ($conf['syslog']) syslog(LOG_WARNING,'[pageutils.php] cleanID: id to be returned: '.$id);
     return($id);
 }
 
@@ -603,6 +606,8 @@ function getCacheName($data,$ext=''){
     global $conf;
     $md5  = md5($data);
     $file = $conf['cachedir'].'/'.$md5{0}.'/'.$md5.$ext;
+    if ($conf['syslog']) syslog(LOG_WARNING,'[pageutils.php] getCacheName: data: '.$data);
+    if ($conf['syslog']) syslog(LOG_WARNING,'[pageutils.php] getCacheName: cache name generated from md5sum of data: '.$file);
     io_makeFileDir($file);
     return $file;
 }
